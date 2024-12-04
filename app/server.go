@@ -35,7 +35,6 @@ func (server *Server) initialize(appConfig AppConfig, dbConfig DBConfig) {
 	fmt.Println("Welcome to " + appConfig.AppName)
 
 	server.initializeDB(dbConfig)
-	server.Router = mux.NewRouter()
 	server.initializeRoutes()
 }
 
@@ -52,6 +51,17 @@ func (server *Server)initializeDB(dbConfig DBConfig) {
 	if err != nil {
 		panic("Failed on connecting to the database server")
 	}
+
+	for _, model := range RegisterModels() {
+		err = server.DB.Debug().AutoMigrate(model.Model)
+
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+
+	fmt.Println("Database migrate successfully :)")
+
 }
 
 func getEnv(key, fallback string) string {
