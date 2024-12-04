@@ -8,11 +8,11 @@ type Model struct {
 
 func RegisterModels() []Model {
 	return []Model{
-		{Model: models.User{}},  
-		{Model: models.Address{}}, 
+		{Model: models.User{}},
+		{Model: models.Address{}},
 		{Model: models.Adoption{}},
-		{Model: models.Pet{}},  
+		{Model: models.Pet{}},
 		{Model: models.Notification{}},
-		{Model: models.Admin{}}, 
+		{Model: models.Admin{}},
 	}
 }

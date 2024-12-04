@@ -6,10 +6,11 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/Dimasaldian/letsAdopt/database/seeders"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
-	"gorm.io/gorm"
 	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
 type Server struct {
@@ -36,6 +37,7 @@ func (server *Server) initialize(appConfig AppConfig, dbConfig DBConfig) {
 
 	server.initializeDB(dbConfig)
 	server.initializeRoutes()
+	seeders.DBSeed(server.DB)
 }
 
 func (server *Server) Run(addr string) {
