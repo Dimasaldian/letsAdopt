@@ -6,9 +6,9 @@ import (
 
 // Adoption represents the adoptions table
 type Adoption struct {
-	ID             uint      `gorm:"primaryKey"`
-	UserID         uint      `gorm:"not null"`
-	PetID          uint      `gorm:"not null"`
+	ID             string      `gorm:"primaryKey"`
+	UserID         string      `gorm:"not null"`
+	PetID          string     `gorm:"not null"`
 	Reason         string    `gorm:"type:text;not null"`
 	Status         string    `gorm:"size:10;default:pending;check:status IN ('pending', 'approved', 'rejected')"`
 	NotificationSent bool      `gorm:"default:false"`

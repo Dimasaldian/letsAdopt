@@ -6,8 +6,8 @@ import (
 
 // Notification represents the notifications table
 type Notification struct {
-	ID        uint      `gorm:"primaryKey"`
-	UserID    uint      `gorm:"not null"`
+	ID        string      `gorm:"primaryKey"`
+	UserID    string     `gorm:"not null"`
 	AdoptionID uint      `gorm:"not null"`
 	Message   string    `gorm:"type:text;not null"`
 	SentAt    time.Time `gorm:"default:CURRENT_TIMESTAMP"`

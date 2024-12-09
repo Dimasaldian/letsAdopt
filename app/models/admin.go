@@ -2,8 +2,8 @@ package models
 
 // Admin represents the admins table
 type Admin struct {
-	ID         uint   `gorm:"primaryKey"`
-	UserID     uint   `gorm:"not null"`
+	ID         string   `gorm:"primaryKey"`
+	UserID     string   `gorm:"not null"`
 	Privileges string `gorm:"type:text"`
 
 	// Relationships

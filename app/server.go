@@ -1,70 +1,15 @@
 package app
 
 import (
-	"fmt"
+	"flag"
 	"log"
-	"net/http"
 	"os"
 
-	"github.com/Dimasaldian/letsAdopt/database/seeders"
-	"github.com/gorilla/mux"
+	"github.com/Dimasaldian/letsAdopt/app/controllers"
 	"github.com/joho/godotenv"
-	"gorm.io/driver/postgres"
-	"gorm.io/gorm"
 )
 
-type Server struct {
-	DB *gorm.DB
-	Router *mux.Router
-}
 
-type AppConfig struct {
-	AppName string
-	AppEnv string
-	AppPort string
-}
-
-type DBConfig struct {
-	DBHost string
-	DBUser string
-	DBPassword string
-	DBName string
-	DBPort string
-}
-
-func (server *Server) initialize(appConfig AppConfig, dbConfig DBConfig) {
-	fmt.Println("Welcome to " + appConfig.AppName)
-
-	server.initializeDB(dbConfig)
-	server.initializeRoutes()
-	seeders.DBSeed(server.DB)
-}
-
-func (server *Server) Run(addr string) {
-	fmt.Printf("Listening to port %s", addr)
-	log.Fatal(http.ListenAndServe(addr, server.Router))
-}
-
-func (server *Server)initializeDB(dbConfig DBConfig) {
-	var err error
-	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Jakarta", dbConfig.DBHost, dbConfig.DBUser, dbConfig.DBPassword, dbConfig.DBName, dbConfig.DBPort)
-	server.DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
-
-	if err != nil {
-		panic("Failed on connecting to the database server")
-	}
-
-	for _, model := range RegisterModels() {
-		err = server.DB.Debug().AutoMigrate(model.Model)
-
-		if err != nil {
-			log.Fatal(err)
-		}
-	}
-
-	fmt.Println("Database migrate successfully :)")
-
-}
 
 func getEnv(key, fallback string) string {
 	if value, ok := os.LookupEnv(key); ok {
@@ -75,14 +20,16 @@ func getEnv(key, fallback string) string {
 }
 
 func Run() {
-	var server = Server{}
-	var appConfig = AppConfig{}
-	var dbConfig = DBConfig{}
+	var server = controllers.Server{}
+	var appConfig = controllers.AppConfig{}
+	var dbConfig = controllers.DBConfig{}
 
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatalf("Error on loading .env file")
 	}
+
+
 
 	appConfig.AppName = getEnv("APP_NAME", "LetsAdopt")
 	appConfig.AppEnv = getEnv("APP_ENV", "development")
@@ -94,6 +41,12 @@ func Run() {
 	dbConfig.DBName = getEnv("DB_NAME", "dbname")
 	dbConfig.DBPort = getEnv("DB_PORT", "5432")
 
-	server.initialize(appConfig, dbConfig)
-	server.Run(":" + appConfig.AppPort)
+	flag.Parse()
+	arg := flag.Arg(0)
+	if arg != "" {
+		server.InitCommands(appConfig, dbConfig)
+	} else {
+		server.Initialize(appConfig, dbConfig)
+		server.Run(":" + appConfig.AppPort)
+	}
 }
