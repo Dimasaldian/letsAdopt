@@ -1,0 +1,68 @@
+{{ define "dashboard" }}
+<body>
+    <section class="menu" id="menu">
+        <nav class="menu">
+            <a href="#" class="judul">Lets<span>Adopt</span></a>
+
+            <div class="navbar-nav">
+                <a href="#">Beranda</a>
+                <a href="#list-pet">Daftar Hewan</a>
+                <a href="#">Pengajuan Adopsi</a>
+                <a href="#">Saran / Komplain</a>
+                <a href="#">Log out</a>
+            </div>
+        </nav>
+    </section>
+    {{ range .admin}}
+    <section class="content" id="content">
+        <div class="nav-content">
+            <h3><i data-feather="user"></i>{{.User.Name}}</h3>
+        </div>
+        <div class="beranda">
+            <h1>Halo, Selamat Datang {{.User.Name}}</h1>
+        </div>
+    </section>
+    {{ end }}
+
+    <section class="list-pet" id="list-pet">
+        <div class="list-pet-container">
+            <h2>Daftar Hewan</h2>
+
+            <button onclick="location.href='/admin/pet/add'" class="btn btn-add">Tambah</button>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nama Hewan</th>
+                        <th>Jenis Hewan</th>
+                        <th>Usia</th>
+                        <th>Deskripsi</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        {{ range .pets }}
+                        <tr>
+                            <td>{{ .ID }}</td>
+                            <td>{{ .Name }}</td>
+                            <td>{{ .Type }}</td>
+                            <td>{{ .Age }}</td>
+                            <td>{{ .Description }}</td>
+                            <td>
+                                <a href="/admin/pet/edit/{{ .ID }}" class="btn btn-edit">Edit</a>
+                                <form action="/admin/pet/delete/{{ .ID }}" method="POST" style="display:inline;">
+                                    <button type="submit" class="btn btn-delete">Hapus</button>
+                                </form>
+                    </tr>
+                    {{ end }}
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <script>
+        feather.replace();
+    </script>
+</body>
+{{ end }}

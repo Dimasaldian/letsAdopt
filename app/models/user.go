@@ -1,15 +1,14 @@
 package models
 
 import (
-	"time"
+
+	"gorm.io/gorm"
 )
 
 type User struct {
-	ID        string    `gorm:"primaryKey"`
-	Name      string    `gorm:"size:100;not null"`
-	Email     string    `gorm:"size:100;uniqueIndex;not null"`
-	Password  string    `gorm:"size:255;not null"`
-	Role      string    `gorm:"size:10;default:user;check:role IN ('admin', 'user')"`
-	CreatedAt time.Time `gorm:"autoCreateTime"`
-	UpdatedAt time.Time `gorm:"autoUpdateTime"`
+    gorm.Model
+    Name     string `gorm:"size:100;not null"`
+    Email    string `gorm:"size:100;not null;unique"`
+    Password string `gorm:"size:255;not null"`
+    Role     string `gorm:"size:10;not null;default:'user'"`
 }

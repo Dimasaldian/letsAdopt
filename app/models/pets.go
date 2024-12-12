@@ -1,18 +1,29 @@
 package models
 
 import (
-	"time"
+
+	"gorm.io/gorm"
 )
 
 type Pet struct {
-	ID          string      `gorm:"primaryKey"`
-	Name        string    `gorm:"size:100;not null"`
-	Type        string    `gorm:"size:20;not null;check:type IN ('dog', 'cat', 'bird', 'other')"`
-	Breed       string    `gorm:"size:100"`
-	Age         int
-	Description string
-	Vaccinated  bool      `gorm:"default:false"`
-	Address     Address    `gorm:"size:255"` 
-	CreatedAt   time.Time `gorm:"autoCreateTime"`
-	UpdatedAt   time.Time `gorm:"autoUpdateTime"`
+	gorm.Model
+	Name        string    `gorm:"size:100;not null" json:"name"`
+	Type        string    `gorm:"size:20;not null" json:"type"` // dog, cat, bird, other
+	Breed       string    `gorm:"size:100" json:"breed"`
+	Age         int       `json:"age"`
+	Description string    `gorm:"type:text" json:"description"`
+	Vaccinated  bool      `json:"vaccinated"`
+	Images      []PetImage `gorm:"foreignKey:PetID;references:ID" json:"images"`      // One-to-many relationship with PetImage
+}
+
+func (p *Pet) GetPets(db *gorm.DB) (*[]Pet, error) {
+	var err error
+	var pets []Pet
+
+	err = db.Debug().Model(&Pet{}).Limit(20).Find(&pets).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return &pets, nil
 }

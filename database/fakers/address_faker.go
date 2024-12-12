@@ -7,6 +7,5 @@ import (
 
 func AddressFaker(db *gorm.DB) *models.Address{
 	return &models.Address{
-		
 	}
 }

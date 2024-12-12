@@ -1,13 +1,12 @@
 package models
 
 import (
-	"time"
+	"gorm.io/gorm"
 )
 
 type PetImage struct {
-	ID        uint      `gorm:"primaryKey;autoIncrement"`
-	PetID     string    `gorm:"not null;index"` // Foreign key to Pet model
-	URL       string    `gorm:"size:255;not null"`
-	CreatedAt time.Time `gorm:"autoCreateTime"`
-	UpdatedAt time.Time `gorm:"autoUpdateTime"`
+	gorm.Model
+	PetID uint   `json:"pet_id"`
+	Pet   Pet    `gorm:"foreignKey:PetID;references:ID" json:"pet"`
+	URL   string `gorm:"size:255;not null" json:"url"`
 }

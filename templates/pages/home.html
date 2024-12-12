@@ -58,39 +58,17 @@
         <button class="prev">&#8249;</button>
 
         <div class="card-container">
-            <div class="card">
-                <img src="/public/img/kitten1.jpg" alt="" class="card-img">
-                <div class="card-body">
-                    <h2>Duby</h2>
-                    <a href="#">Kenalan dengan saya!</a>
+            {{ range .pets }}
+                <div class="card">
+                    <img src="/public/img/kitten1.jpg" alt="Gambar {{ .Name }}" class="card-img"> 
+                    <div class="card-body">
+                        <h2>{{ .Name }}</h2>
+                        <a href="#">Kenalan dengan saya!</a>
+                    </div>
                 </div>
-            </div>
-
-            <div class="card">
-                <img src="/public/img/kitten1.jpg" alt="" class="card-img">
-                <div class="card-body">
-                    <h2>Geuse</h2>
-                    <a href="#">Kenalan dengan saya!</a>
-                </div>
-            </div>
-
-            <div class="card">
-                <img src="/public/img/kitten1.jpg" alt="" class="card-img">
-                <div class="card-body">
-                    <h2>Prior</h2>
-                    <a href="#">Kenalan dengan saya!</a>
-                </div>
-            </div>
-
-            <div class="card">
-                <img src="/public/img/kitten1.jpg" alt="" class="card-img">
-                <div class="card-body">
-                    <h2>Rust</h2>
-                    <a href="#">Kenalan dengan saya!</a>
-                </div>
-            </div>
+            {{ end }}
         </div>
-        <button class="next">&#8250</button>
+        <button class="next">&#8250;</button>
     </div>
 </section>
 

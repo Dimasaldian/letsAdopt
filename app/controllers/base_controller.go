@@ -36,7 +36,7 @@ type DBConfig struct {
 func (server *Server) Initialize(appConfig AppConfig, dbConfig DBConfig) {
 	fmt.Println("Welcome to " + appConfig.AppName)
 
-	// server.initializeDB(dbConfig)
+	server.initializeDB(dbConfig)
 	server.initializeRoutes()
 	// seeders.DBSeed(server.DB)
 }
